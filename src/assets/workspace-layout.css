@@ -1,0 +1,52 @@
+/* Fixed input/output frames reserve the remaining space for mouse navigation. */
+.workspace-grid.fixed-workspace {
+  --workspace-height: clamp(860px, calc(100dvh - 200px), 1100px);
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr) 320px;
+  gap: 14px;
+  height: var(--workspace-height);
+  min-height: 0;
+  align-items: stretch;
+}
+.fixed-workspace > .aircraft-panel,
+.fixed-workspace > .analysis-panel {
+  height: 100%;
+  min-height: 0;
+  grid-column: auto;
+}
+.fixed-workspace > .center-column {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+.fixed-workspace .replay-panel {
+  flex: 1 1 0;
+  height: 100%;
+  min-height: 0;
+}
+.fixed-workspace .viewer-region {
+  flex: 1 1 0;
+  min-height: 560px;
+}
+.fixed-workspace .aircraft-state-strip,
+.fixed-workspace .replay-controls { flex-shrink: 0; }
+.fixed-workspace .replay-heading { height: auto; min-height: 53px; flex-wrap: wrap; }
+.fixed-workspace .camera-tools { min-width: 0; margin-left: auto; }
+.mission-altitude-panel { height: 190px; margin-top: 16px; }
+.mission-altitude-panel .altitude-chart { height: 151px; }
+/* Stack fixed frames on smaller devices, keeping the replay tall. */
+@media (max-width: 1099px) {
+  .workspace-grid.fixed-workspace {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    height: auto;
+    gap: 16px;
+  }
+  .fixed-workspace > .center-column { grid-row: 1; height: 860px; order: 0; }
+  .fixed-workspace > .aircraft-panel { grid-row: 2; height: 620px; order: 0; }
+  .fixed-workspace > .analysis-panel { grid-row: 3; height: 660px; order: 0; }
+}
+@media (max-width: 540px) {
+  .fixed-workspace > .center-column { height: 880px; }
+  .fixed-workspace .viewer-region { min-height: 540px; }
+}

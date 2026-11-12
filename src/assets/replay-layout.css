@@ -1,0 +1,147 @@
+/* Size overlays against the viewer itself, including resized dashboard columns. */
+.debrief-viewer {
+  container: debrief / size;
+  overflow: hidden;
+  --scene-edge: 12px;
+}
+.debrief-viewer.viewer-expanded {
+  inset: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  z-index: 80;
+}
+.debrief-overlay-header {
+  position: absolute;
+  inset: var(--scene-edge) var(--scene-edge) auto;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.debrief-overlay-header .debrief-topline {
+  position: static;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.debrief-overlay-header .debrief-topline > .map-tag { margin-left: auto; }
+.debrief-overlay-header .debrief-toolbar {
+  position: relative;
+  inset: auto;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #45655e transparent;
+  pointer-events: auto;
+}
+.debrief-toolbar > button,
+.debrief-toolbar > .tool-divider,
+.debrief-toolbar > .trail-select { flex-shrink: 0; white-space: nowrap; }
+.debrief-toolbar .expand-scene { position: sticky; right: 0; background: #15272c; z-index: 1; }
+.debrief-toolbar .scene-map-select { flex: 0 0 100px; width: 100px; padding: 5px 6px; font-size: 9px; margin: 0; }
+.debrief-viewer .cesium-viewer-bottom { bottom: var(--scene-footer-height); left: 12px; max-width: calc(100% - 24px); max-height: 28px; overflow: auto; scrollbar-width: thin; z-index: 2; opacity: 1; }
+.debrief-viewer .cesium-widget-credits { margin-bottom: 0; }
+.debrief-viewer .debrief-camera-bar {
+  top: calc(var(--scene-header-height) + var(--scene-edge) + 8px);
+  left: var(--scene-edge);
+  flex-direction: row;
+  max-width: calc(100% - 92px);
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  z-index: 2;
+}
+.debrief-camera-bar > button { flex-shrink: 0; }
+.debrief-camera-bar > span { width: 1px; height: 18px; flex: 0 0 1px; margin: 5px 2px; border: 0; background: #3a514b; }
+.debrief-viewer .debrief-compass { top: calc(var(--scene-header-height) + var(--scene-edge) + 8px); right: 17px; z-index: 2; }
+.debrief-status-row {
+  position: absolute;
+  left: var(--scene-edge);
+  right: var(--scene-edge);
+  bottom: calc(var(--scene-footer-height) + 90px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 12px;
+  min-width: 0;
+  max-height: 28%;
+  pointer-events: none;
+  z-index: 2;
+}
+.debrief-status-row .debrief-selection { position: static; grid-column: 1; grid-row: 1; min-width: 0; overflow: hidden; }
+.debrief-status-row .debrief-selection > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.debrief-status-row .debrief-object-list {
+  position: static;
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  max-width: 100%;
+  max-height: 95px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  pointer-events: auto;
+}
+.debrief-object-list button { min-width: 0; max-width: 100%; }
+.debrief-object-list strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.debrief-object-list i, .debrief-object-list span { flex-shrink: 0; }
+.debrief-viewer .debrief-legend {
+  left: var(--scene-edge);
+  right: var(--scene-edge);
+  bottom: calc(var(--scene-footer-height) + 56px);
+  flex-wrap: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+  z-index: 2;
+}
+.debrief-viewer .debrief-ground-note {
+  bottom: calc(var(--scene-footer-height) + 34px);
+  left: var(--scene-edge);
+  right: var(--scene-edge);
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  z-index: 2;
+}
+.debrief-viewer .expanded-transport {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto auto;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px 16px;
+  z-index: 4;
+}
+.expanded-transport > input { width: 100%; min-width: 0; margin: 0; }
+.expanded-transport > .mono, .expanded-transport > label { white-space: nowrap; }
+.debrief-viewer .viewer-error, .debrief-viewer .viewer-loading { z-index: 5; }
+.debrief-viewer .error-close { z-index: 6; }
+/* Container queries cover narrow columns on a wide desktop as well as phones. */
+@container debrief (max-width: 540px) {
+  .debrief-toolbar > button > span { display: none; }
+  .debrief-caption > span:last-child { display: none; }
+  .debrief-toolbar > button { padding: 5px; }
+  .debrief-legend { gap: 8px; font-size: 7px; }
+  .debrief-object-list span { display: none; }
+  .debrief-viewer .expanded-transport { grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; padding: 10px 12px; }
+  .expanded-transport > input { grid-row: 2; grid-column: 1 / -1; }
+  .expanded-transport > .mono:last-child { display: none; }
+}
+@container debrief (max-width: 350px) {
+  .debrief-toolbar .tool-divider { display: none; }
+  .trail-select { font-size: 0; gap: 0; }
+  .debrief-caption { font-size: 7px; padding: 5px; }
+  .debrief-topline .map-tag { font-size: 7px; padding: 5px; }
+  .debrief-legend > span:nth-child(2) { display: none; }
+}
+@container debrief (max-height: 360px) {
+  .debrief-viewer .debrief-compass { display: none; }
+  .debrief-viewer .debrief-camera-bar { max-width: calc(100% - 24px); }
+  .debrief-selection > span:not(:first-child) { display: none; }
+  .debrief-status-row .debrief-object-list { max-height: 53px; }
+}
+@container debrief (max-height: 280px) {
+  .debrief-status-row, .debrief-viewer .debrief-ground-note { display: none; }
+}

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="ACMI prototype" xmlns="http://www.topografix.com/GPX/1/1"><trk><name>Simulated GPS example</name><trkseg><trkpt lat="15.145" lon="100.255"><ele>3650</ele><time>2026-01-15T03:00:02Z</time></trkpt><trkpt lat="15.149" lon="100.254"><ele>3670</ele><time>2026-01-15T03:00:07Z</time></trkpt><trkpt lat="15.153" lon="100.253"><ele>3690</ele><time>2026-01-15T03:00:12Z</time></trkpt></trkseg></trk></gpx>

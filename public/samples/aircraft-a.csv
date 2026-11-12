@@ -1,0 +1,4 @@
+timestamp,latitude,longitude,altitude,heading,pitch,roll,aircraftId,flightId,source
+2026-01-15T03:00:00Z,15.12,100.23,4200,350,2,10,A,SIM-026,Sample CSV
+2026-01-15T03:00:05Z,15.124,100.229,4220,352,2,12,A,SIM-026,Sample CSV
+2026-01-15T03:00:10Z,15.128,100.228,4240,354,3,14,A,SIM-026,Sample CSV

@@ -1,0 +1,13 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useMissionStore } from '../../stores/mission'
+import { durationLabel } from '../../utils/replay'
+import { validTime } from '../../utils/quality'
+import { useReplayClock } from '../../composables/useReplayClock'
+import Icon from '../common/AppIcon.vue'
+const store = useMissionStore(); useReplayClock()
+const progress = computed(() => store.duration ? (store.currentTime - store.start) / (store.end - store.start) * 100 : 0)
+const markers = computed(() => store.mission.events.filter(e => validTime(e.timestamp) && Date.parse(e.timestamp) >= store.start && Date.parse(e.timestamp) <= store.end))
+function play() { if (store.currentTime >= store.end) store.seek(store.start); store.playing = !store.playing }
+</script>
+<template><section class="replay-controls"><div class="replay-toolbar"><div class="inline"><button class="play-button" :disabled="!store.duration" :aria-label="store.playing ? 'Pause replay' : 'Play replay'" @click="play"><Icon :name="store.playing ? 'Pause' : 'Play'" :size="18"/></button><button class="icon-button" aria-label="Restart replay" :disabled="!store.duration" @click="store.seek(store.start); store.playing = false"><Icon name="RotateCcw" :size="17"/></button><span class="timecode">{{ durationLabel((store.currentTime - store.start) / 1000) }}<span> / {{ durationLabel(store.duration) }}</span></span></div><div class="inline"><label class="speed-label">SPEED<select v-model.number="store.speed" aria-label="Playback speed"><option v-for="s in [0.5, 1, 2, 4]" :key="s" :value="s">{{ s }}×</option></select></label><span class="utc-tag">{{ new Date(store.currentTime).toISOString().slice(11, 19) }} UTC</span></div></div><div class="timeline-wrap"><div class="timeline-track"><div :style="{ width: progress + '%' }"></div></div><input class="seek" type="range" aria-label="Seek replay timeline" :min="store.start" :max="store.end || store.start + 1" :step="100" :value="store.currentTime" :disabled="!store.duration" @input="store.seek(Number(($event.target as HTMLInputElement).value))"><button v-for="e in markers" :key="e.id" class="event-marker" :class="{ selected: store.selectedEventId === e.id }" :style="{ left: ((Date.parse(e.timestamp) - store.start) / (store.end - store.start) * 100) + '%' }" :title="`${e.id} · ${e.timestamp}`" :aria-label="`Seek to ${e.id}`" @click="store.selectEvent(e.id)"></button></div><div class="timeline-labels"><span v-for="i in 6" :key="i">{{ durationLabel(store.duration / 5 * (i - 1)) }}</span></div><div class="timeline-note"><span><i class="event-dot"></i> Shot event</span><span>Interpolation for visualization only</span></div></section></template>
